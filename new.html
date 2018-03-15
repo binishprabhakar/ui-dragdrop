@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>jQuery UI Droppable - Simple photo manager</title>
+        <link href="jquery-ui.css" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+
+        <script src="external/jquery/jquery.js"></script>
+        <script src="jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $('.draggable').draggable({
+                    revert: "invalid",
+                    stack: ".draggable",
+                    helper: 'clone'
+                });
+                $(document).find('.droppable').droppable({
+                    accept: ".draggable",
+                    drop: function (event, ui) {
+                        var droppable = $(this);
+                        var draggable = ui.draggable;
+                        // Move draggable into droppable
+                        var drag = $('.droppable').has(ui.draggable).length ? draggable : draggable.clone().draggable({
+                            revert: "invalid",
+                            stack: ".draggable",
+                            helper: 'clone'
+                        });
+                        drag.appendTo(droppable);
+                        draggable.css({
+                            float: 'left'
+                        });
+                    }
+                });
+                
+                $('button').on('click', function(){
+                    $('#box').append('<div class="droppable"></div>');
+                })
+            });
+        </script>
+        <style type="text/css">
+            .draggable {
+                width: 50px;
+                height: 50px;
+                background: red;
+
+            }
+            .droppable {
+                width: 150px;
+                height: 150px;
+                background: lightgrey;
+                margin: 5px; 
+                display:inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <button>Add</button>
+        <div style="width:700px;float: left" id="box">
+            <div class="droppable"></div>
+        </div>
+        <div style="width:700px;float: left">
+        <div class="draggable"></div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery UI Droppable - Default functionality</title>
+        <link href="jquery-ui.css" rel="stylesheet">
+        <script src="external/jquery/jquery.js"></script>
+        <script src="jquery-ui.js"></script>
+
+        <style>
+            .clear{
+                clear: both;
+                padding:10px
+            } 
+            .drop-wrap{
+                width: 825px;
+                padding: 10px;
+                border: 1px solid #000;
+                min-height: 250px;
+                float: left;
+            }
+            .drop-box{
+                width: 200px;
+                height: 100px;
+                margin: 2px;
+                border: 1px dotted #000;
+                position: relative;
+                display: inline-block;
+            }
+            .drop-box-left,
+            .drop-box-right{
+                width: 100px;
+                height: 100px;
+                float: left;
+
+            }
+            .drop-box-left{
+                border-right: 1px dotted #000;
+            }
+            .drop-box .close {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                z-index: 100;
+                cursor: pointer;
+                background-color: #ff6666;
+                width: 15px;
+                height: 15px;
+                text-align: center;
+                padding: 3px;
+
+            }
+
+            #gallery { float: left; width: 65%; min-height: 12em; }
+            .gallery.custom-state-active { background: #eee; }
+            .gallery li { float: left; width: 96px; padding: 0.4em; margin: 0 0.4em 0.4em 0; text-align: center; }
+            .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+            .gallery li a { float: right; }
+            .gallery li a.ui-icon-zoomin { float: left; }
+            .gallery li img { width: 100%; cursor: move; }
+
+            #trash { float: right; width: 32%; min-height: 18em; padding: 1%; }
+            #trash h4 { line-height: 16px; margin: 0 0 0.4em; }
+            #trash h4 .ui-icon { float: left; }
+            #trash .gallery h5 { display: none; }
+        </style>
+
+        <script>
+            $(function () {
+
+                function addBox(i) {
+                    var drop_box = '';
+
+                    drop_box += '<div class="drop-box" id="drop-box-' + i + '"><span class="close" rel="' + i + '">&times;</span><div class="drop-box-left">' + i + '</div><div class="drop-box-right"></div></div>';
+
+                    var newBox = $('.drop-wrap').append(drop_box);
+                }
+
+                $('button').on('click', function () {
+                    var count = parseInt($('#count').val()) + 1;
+                    $('#count').val(count);
+                    addBox(count);
+                });
+
+                $('.drop-wrap').on('click', '.close', function () {
+                    var id = $(this).attr('rel');
+                    $('#drop-box-' + id).remove();
+                });
+
+                /* drag and Drop */
+                $(".draggable img").draggable();
+                $(".drop-box .drop-box-left").droppable({
+                    drop: function (event, ui) {
+                        $(this).html(ui.draggable);
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <button>Add</button>
+        <input type="text" value="0" id="count">
+        <div class="clear"></div>
+        <div class="drop-wrap">
+            <div class="drop-box" id="drop-box-0">
+                <span class="close" rel="0">&times;</span>
+                <div class="drop-box-left"></div>
+                <div class="drop-box-right"></div>
+            </div>
+        </div>
+        <div class="clear"></div>
+        <h1>Videos</h1>
+        <div class="clear"></div>
+        <div class="draggable">
+            <img src="images/high_tatras_min.jpg" alt="The peaks of High Tatras" width="96" height="72">
+            <img src="images/high_tatras3_min.jpg" alt="Planning the ascent" width="96" height="72">
+            <img src="images/high_tatras2_min.jpg" alt="The chalet at the Green mountain lake" width="96" height="72">
+            <img src="images/high_tatras4_min.jpg" alt="On top of Kozi kopka" width="96" height="72">
+        </div>
+        <div class="clear"></div>
+    </body>
+</html>

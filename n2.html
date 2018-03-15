@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery UI Droppable - Default functionality</title>
+        <link href="jquery-ui.css" rel="stylesheet">
+        <script src="external/jquery/jquery.js"></script>
+        <script src="jquery-ui.js"></script>
+
+        <style>
+            .drop {
+                width: 250px;
+                height: 150px;
+                border: 1px solid #000;
+            }
+
+            .drag {
+                width: 100px;
+                height: 100px;
+                display: inline-block;
+                margin: 5px;
+            }
+
+            .drag-section {
+                height: inherit;
+                box-shadow: 0px 0px 1px black;
+                float: left;
+                cursor: move;
+            }
+
+            .inside-drag {
+                width: 50px;
+                height: 50px;
+                background-color: purple;
+                display: inline-block;
+                margin: 5px;
+            }
+            .remove{
+                float: left;
+                cursor: pointer;
+            }
+        </style>
+
+        <script>
+            $(function () {
+                /* drag */
+                $(".drag, .inside-drag").draggable({
+                    helper: "clone",
+                    refreshPositions: true,
+                    scroll: false,
+                    zIndex: "100",
+                });
+
+                /* drop on page canvas */
+                $(".drop").droppable({
+                    accept: ".inside-drag, .drag",
+                    drop: function (event, ui) {
+                        var target = $(event.target);
+                        if (!$(this).find('.drag').length) {
+                            var dropped = $(ui.draggable).clone().appendTo(target);
+                            console.log($(this).attr("id"));
+                        } else {
+                            alert('Failed');
+                        }
+
+                        /*if (dropped.hasClass('drag')) {
+                         
+                         dropped.droppable({
+                         accept: ".inside-drag",
+                         greedy: true,
+                         drop: function (event, ui) {
+                         var target = $(event.target);
+                         $(ui.draggable).clone().appendTo(target);
+                         },
+                         });
+                         }*/
+                    },
+                });
+
+                $(".drop").on('click', '.remove', function () {
+                    var id = $(this).attr('rel');
+                    $(this).closet(".drop").find('.box-' + id).remove();
+                })
+
+                $('button').on('click', function () {
+                   $('.drop-wrap').append('<div class="drop"></div>').droppable();
+                });
+
+            });
+        </script>
+    </head>
+
+    <body>
+        <button>Add</button>
+        <div class="drop-wrap">
+            <div class="drop"></div>
+        </div>
+
+        <div class="drag box-1">
+            <div class="drag-section"><a class="remove" rel="1">Remove</a><img src="images/high_tatras_min.jpg" alt="The peaks of High Tatras" width="96" height="72"></div>
+        </div>
+        <div class="drag box-2">
+            <div class="drag-section"><a class="remove" rel="1">Remove</a><img src="images/high_tatras2_min.jpg" alt="The peaks of High Tatras" width="96" height="72"></div>
+        </div>
+        <div class="drag box-3">
+            <div class="drag-section"><a class="remove" rel="1">Remove</a><img src="images/high_tatras3_min.jpg" alt="The peaks of High Tatras" width="96" height="72"></div>
+        </div>
+
+        <div class="inside-drag"></div>
+        <div class="inside-drag"></div>
+        <div class="inside-drag"></div>
+        <div class="inside-drag"></div>
+    </body>
+</html>
